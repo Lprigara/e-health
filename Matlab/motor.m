@@ -15,34 +15,36 @@ fclose(serialPort);
 %abrir puerto serie
 fopen(serialPort);
 
+numMuestras = 400;
 
- for i=1:400    
+  bpm= zeros(1, numMuestras);
+  so2 = zeros(1, numMuestras);
+  temp = zeros(1, numMuestras);
+  air = zeros(1, numMuestras);
+
+ for i=1:numMuestras    
   	data =fscanf(serialPort,'%s');
     disp(data);
     data = regexp(data, '\-', 'split'); %separar datos en campos
-    BPM(i,1)= data(1,1);
-    SO2(i,1)= data(1,2);
-    temp(i,1)= data(1,3);
-    air(i,1)= data(1,4);
+    bpm(i)= str2double(data(1));
+    so2(i)= str2double(data(2));
+    temp(i)= str2double(data(3));
+    air(i)= str2double(data(4));
  end
  
 %Imprimir las gráficas
-BPM = str2double(BPM);
 figure(1)
-plot(BPM);
-title('BPM'); xlabel('Time'); ylabel('bpm');
+plot(bpm);
+title('bpm'); xlabel('Time'); ylabel('bpm');
 
-SO2 = str2double(SO2);
 figure(2)
-plot(SO2);
-title('SO2'); xlabel('time'); ylabel('so2');
+plot(so2);
+title('so2'); xlabel('time'); ylabel('so2');
 
-temp = str2double(temp);
 figure(3)
 plot(temp);
 title('Temp'); xlabel('time'); ylabel('temp');
 
-air = str2double(air);
 figure(4)
 plot(air);
 title('AirFlow'); xlabel('Samples'); ylabel('air');

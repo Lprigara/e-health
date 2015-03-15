@@ -2,29 +2,29 @@
 #include <PinChangeInt.h>
 int cont =0;
 int pin = 6;
-// The setup routine runs once when you press reset:
+char delimitador = '-';
+char finPaquete = '\n';
+
 void setup() {
   Serial.begin(9600);  
   eHealth.initPulsioximeter();
-}
-
-// the loop routine runs over and over again forever:
-void loop() {
+  
   //attach interrupts to use the pulsioximeter.     
   PCintPort::attachInterrupt(pin, readPulsioximeter, RISING);
-  //delay(1000);
+}
+
+void loop() {
   
    Serial.print(eHealth.getBPM());  
-   Serial.print("-");  
+   Serial.print(delimitador);  
    Serial.print(eHealth.getOxygenSaturation());     
-   Serial.print("-"); 
+   Serial.print(delimitador); 
    Serial.print(eHealth.getTemperature());
-   Serial.print("-"); 
-   Serial.print(analogRead(A1));
-   Serial.print("-"); 
-   Serial.print("\n");
- 
-  
+   Serial.print(delimitador); 
+   Serial.print(int(eHealth.getAirFlow()));
+   Serial.print(delimitador); 
+   Serial.print(finPaquete);
+
 }
 
 void readPulsioximeter() {  
