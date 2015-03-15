@@ -13,23 +13,35 @@ warning('off','MATLAB:serial:fscanf:unsuccessfulRead');
 fclose(serialPort);
 
 %abrir puerto serie
-fopen(serialPort);
+try
+    fopen(serialPort);
+catch
+    warning('Problema abriendo el puerto serial.');
+    fclose(serialPort);
+    return;
+end
 
 numMuestras = 400;
 
-  bpm= zeros(1, numMuestras);
-  so2 = zeros(1, numMuestras);
-  temp = zeros(1, numMuestras);
-  air = zeros(1, numMuestras);
+bpm= zeros(1, numMuestras);
+so2 = zeros(1, numMuestras);
+temp = zeros(1, numMuestras);
+air = zeros(1, numMuestras);
 
- for i=1:numMuestras    
-  	data =fscanf(serialPort,'%s');
-    disp(data);
-    data = regexp(data, '\-', 'split'); %separar datos en campos
-    bpm(i)= str2double(data(1));
-    so2(i)= str2double(data(2));
-    temp(i)= str2double(data(3));
-    air(i)= str2double(data(4));
+ for i=1:numMuestras  
+    try 
+        data =fscanf(serialPort,'%s');
+        disp(data);
+        data = regexp(data, '\-', 'split'); %separar datos en campos
+        bpm(i)= str2double(data(1));
+        so2(i)= str2double(data(2));
+        temp(i)= str2double(data(3));
+        air(i)= str2double(data(4));
+    catch 
+        warning('Error procesando datos.');
+        fclose(serialPort);
+        return;
+    end
  end
  
 %Imprimir las gráficas
