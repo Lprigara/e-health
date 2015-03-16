@@ -8,6 +8,8 @@ char finPaquete = '\n';
 void setup() {
   Serial.begin(9600);  
   eHealth.initPulsioximeter();
+  eHealth.initPositionSensor();     
+
   
   //attach interrupts to use the pulsioximeter.     
   PCintPort::attachInterrupt(pin, readPulsioximeter, RISING);
@@ -23,8 +25,12 @@ void loop() {
    Serial.print(delimitador); 
    Serial.print(int(eHealth.getAirFlow()));
    Serial.print(delimitador); 
+   Serial.print(eHealth.getBodyPosition());
+   Serial.print(delimitador); 
+   Serial.print(eHealth.getSkinConductance());
+   Serial.print(delimitador); 
+   Serial.print(eHealth.getSkinResistance());
    Serial.print(finPaquete);
-
 }
 
 void readPulsioximeter() {  

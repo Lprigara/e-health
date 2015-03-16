@@ -27,6 +27,9 @@ bpm= zeros(1, numMuestras);
 so2 = zeros(1, numMuestras);
 temp = zeros(1, numMuestras);
 air = zeros(1, numMuestras);
+position = 0;
+skinConductance = zeros(1, numMuestras);
+skinResistence = zeros(1, numMuestras);
 
  for i=1:numMuestras  
     try 
@@ -37,6 +40,9 @@ air = zeros(1, numMuestras);
         so2(i)= str2double(data(2));
         temp(i)= str2double(data(3));
         air(i)= str2double(data(4));
+        position = str2double(data(5));
+        skinConductance = str2double(data(6));
+        skinResistence = str2double(data(7));
     catch 
         warning('Error procesando datos.');
         fclose(serialPort);
