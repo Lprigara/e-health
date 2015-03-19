@@ -26,47 +26,59 @@ function motor()
     global KEY_IS_PRESSED
     KEY_IS_PRESSED = 0;
 
-    i =1; 
+    count1=0; 
+    count2=0; 
+    count3=0; 
+    time=0;
+    time2=0;
+    time3=0;
+    
+    tic
     while ~KEY_IS_PRESSED
-       try 
-           data =fscanf(serialPort,'%s');
+        try 
+           data =fscanf(serialPort,'%s'); %lectura del puerto serial
            disp(data);
            data = regexp(data, '\-', 'split'); %separar datos en campos
-           bpm(i)= str2double(data(1));
-           so2(i)= str2double(data(2));
-           temp(i)= str2double(data(3));
-           air(i)= str2double(data(4));
-    %         position = str2double(data(5));
-    %         skinConductance = str2double(data(6));
-    %         skinResistence = str2double(data(7));
+           set(gcf, 'KeyPressFcn', @myKeyPressFcn); %para la ejecución al pulsar una tecla
+           
+           if(strcmp(data(1),'Cab1'))
+               count1 = count1 +1;
+               time(count1) = toc;
+               
+               bpm(count1)= str2double(data(2));
+               so2(count1)= str2double(data(3));
+ 
+               figure(1);
+               plot(time, bpm);
+               title('BPM'); xlabel('Time(s)'); ylabel('bpm');
 
-            %Imprimir las gráficas
-
-           figure(1);
-           set(gcf, 'KeyPressFcn', @myKeyPressFcn);
-
-           subplot(2,2,1);
-           plot(bpm);
-           title('bpm'); xlabel('Time'); ylabel('bpm');
-
-           subplot(2,2,2);
-           plot(so2);
-           title('so2'); xlabel('time'); ylabel('so2');
-
-           subplot(2,2,3);
-           plot(temp);
-           title('Temp'); xlabel('time'); ylabel('temp');
-
-           subplot(2,2,4);
-           plot(air);
-           title('AirFlow'); xlabel('Samples'); ylabel('air');
-
-           i=i+1;
-       catch 
+               figure(2);
+               plot(time, so2);
+               title('SO2'); xlabel('Time(s)'); ylabel('so2');
+            
+           elseif(strcmp(data(1),'Cab2'))
+               count2 = count2 +1;
+               time2(count2) = toc;
+               temp(count2)= str2double(data(2));
+         
+               figure(3);
+               plot(time2, temp);
+               title('Temp'); xlabel('Time(s)'); ylabel('temp');
+          
+           elseif(strcmp(data(1),'Cab3'))
+               count3 = count3 +1;
+               time3(count3) = toc;
+               air(count3)= str2double(data(2));
+             
+               figure(4)
+               plot(time3, air);
+               title('AirFlow'); xlabel('Time(s)'); ylabel('air');
+           end
+        catch 
            warning('Error procesando datos.');
            fclose(serialPort);
            return;
-       end
+        end
     end
 
     %cerrar puerto serie
