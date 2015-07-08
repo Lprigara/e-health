@@ -1,5 +1,5 @@
-function parar_pushbutton_callback(hObject,~,eHealth)
-    stop(eHealth.escaneoTimer);
-    stop(eHealth.variablesTimer);
-    stop(eHealth.mostrarEcgTimer);
+function parar_pushbutton_callback(hObject,~,interfaz)
+    stop(interfaz.escaneoTimer);
+    stop(interfaz.variablesTimer);
+    stop(interfaz.mostrarEcgTimer);
 end

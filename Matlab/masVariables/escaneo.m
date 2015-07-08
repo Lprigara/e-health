@@ -1,4 +1,4 @@
-function escaneo(eHealth)
-  datos = fscanf(eHealth.puerto,'%s'); %lectura del puerto serial
-  descomponer(datos,eHealth);
+function escaneo(serial, variables)
+  datos = fscanf(serial.puerto,'%s'); %lectura del puerto serial
+  descomponer(datos, variables);
 end

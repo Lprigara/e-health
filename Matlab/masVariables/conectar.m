@@ -1,25 +1,31 @@
-function conectar(eHealth)
+function conectar(serialComunication)
+    serialComunication.COM = 'COM9';
+    serialComunication.baudRate = 9600;
+    serialComunication.stopBits = 1;
+    serialComunication.dataBits = 8;
+    serialComunication.paridad = 'none';
+    
     %borrar previos
     delete(instrfind({'Port'},{'COM9'}));
-
+     
     %crear objeto serie    
-    eHealth.puerto = serial('COM9');
-    set(eHealth.puerto, 'Baudrate', 9600);
-    set(eHealth.puerto, 'StopBits', 1);
-    set(eHealth.puerto, 'DataBits', 8);
-    set(eHealth.puerto, 'Parity', 'none');
+    serialComunication.puerto = serial('COM9');
+    set(serialComunication.puerto, 'Baudrate', serialComunication.baudRate);
+    set(serialComunication.puerto, 'StopBits', serialComunication.stopBits);
+    set(serialComunication.puerto, 'DataBits', serialComunication.dataBits);
+    set(serialComunication.puerto, 'Parity', serialComunication.paridad);
     warning('off','MATLAB:serial:fscanf:unsuccessfulRead');
 
     %cerrar el puerto si por algo se quedó abierto
-    fclose(eHealth.puerto);
+    fclose(serialComunication.puerto);
 
     %abrir puerto serie
     try
-        fopen(eHealth.puerto);
-        eHealth.conectado = 1;
+        fopen(serialComunication.puerto);
+        serialComunication.conectado = 1;
     catch
-        fclose(eHealth.puerto);
-        eHealth.conectado = 0;
+        fclose(serialComunication.puerto);
+        serialComunication.conectado = 0;
         errordlg('Error en la conexión, inténtelo de nuevo','WARNING');
         return;
     end
