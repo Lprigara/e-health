@@ -3,7 +3,6 @@ classdef InterfazClass < handle
     properties
         estadoDispositivo;
         escaneoTimer;
-        mostrarEcgTimer;
         variablesTimer;
         conectarButton;
         desconectarButton;
@@ -21,7 +20,6 @@ classdef InterfazClass < handle
         function obj = InterfazClass
         obj.estadoDispositivo = 0;
         obj.escaneoTimer = 0;
-        obj.mostrarEcgTimer = 0;
         obj.variablesTimer = 0;
         obj.conectarButton = 0;
         obj.desconectarButton = 0;
